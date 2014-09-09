@@ -215,11 +215,11 @@ public class EchoGUI extends JFrame implements EchoListener {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        try {
-            client.stopClient();
-        } catch (IOException ex) {
-            Logger.getLogger(EchoGUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        try {
+//            client.stopClient();
+//        } catch (IOException ex) {
+//            Logger.getLogger(EchoGUI.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     @Override
