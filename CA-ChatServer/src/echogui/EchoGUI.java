@@ -169,7 +169,8 @@ public class EchoGUI extends JFrame implements EchoListener {
 
     private void jButtonSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSendActionPerformed
         String message = jTextAreaSend.getText();
-        client.send(message);
+        String receiver = "*";
+        client.send(message, receiver);
         
     }//GEN-LAST:event_jButtonSendActionPerformed
 

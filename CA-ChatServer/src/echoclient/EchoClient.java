@@ -30,9 +30,9 @@ public class EchoClient extends Thread{
         output = new PrintWriter(socket.getOutputStream(), true);  //Set to true, to get auto flush behaviour
         this.username = name;
     }
-
-    public void send(String msg) {
-        output.println(msg);
+    
+    public void send(String msg, String receiver) {
+        output.println("SEND#" + receiver + "#" + msg);
     }
 
     
