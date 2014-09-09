@@ -56,7 +56,7 @@ public class EchoServer {
     
     public static void send(String msg) {
         for (ClientHandler ch : clients) {
-            ch.send(msg.toUpperCase());
+//            ch.send(msg.toUpperCase());
         }
     }
     

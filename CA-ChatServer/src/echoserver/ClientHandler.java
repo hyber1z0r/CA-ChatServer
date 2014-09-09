@@ -1,5 +1,6 @@
 package echoserver;
 
+import echoclient.EchoClient;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -12,19 +13,23 @@ import shared.ProtocolStrings;
  *
  * @author jakobgaardandersen
  */
-public class ClientHandler extends Thread {
+public class ClientHandler {
 
-    private final Scanner input;
-    private final PrintWriter output;
-    private final Socket socket;
+    private Scanner input;
+    private PrintWriter output;
+    private Socket socket;
+    private EchoClient client;
+    private String username;
 
-    public ClientHandler(Socket socket) throws IOException {
+    public Scanner connect(EchoClient client, String ip, int port, String user) throws IOException {
+        socket = new Socket(ip, port);
         input = new Scanner(socket.getInputStream());
         output = new PrintWriter(socket.getOutputStream(), true);
-        this.socket = socket;
+        this.client = client;
+        this.username = user;
+        return input;
     }
 
-    @Override
     public void run() {
         try {
             String message = input.nextLine(); //IMPORTANT blocking call
@@ -51,7 +56,22 @@ public class ClientHandler extends Thread {
         }
     }
 
-    public void send(String msg) {
-        output.println(msg);
+    public void send(String msg, String receiver) {
+        String message = "SEND#" + receiver + "#" + msg;
+        output.println(message);
     }
+
+    public void sendConnectMsg() {
+        output.println("CONNECT#" + this.username);
+    }
+
+    public void disconnect() {
+        output.println("CLOSE#");
+    }
+
+    public boolean handleMessage(String msg) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    
 }

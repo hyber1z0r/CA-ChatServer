@@ -1,5 +1,6 @@
 package echoclient;
 
+import echoserver.ClientHandler;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.InetAddress;
@@ -21,63 +22,34 @@ public class EchoClient extends Thread {
     private PrintWriter output;
     private final List<EchoListener> listeners = new ArrayList();
     private String username;
+    private ClientHandler handler = new ClientHandler();
 
     public void connect(String address, int port, String name) throws UnknownHostException, IOException {
-        this.port = port;
-        serverAddress = InetAddress.getByName(address);
-        socket = new Socket(serverAddress, port);
-        input = new Scanner(socket.getInputStream());
-        output = new PrintWriter(socket.getOutputStream(), true);  //Set to true, to get auto flush behaviour
-        this.username = name;
+        this.input = handler.connect(this, address, port, username);
+        start();
+        handler.sendConnectMsg();
     }
 
     public void send(String msg, String receiver) {
-        output.println("SEND#" + receiver + "#" + msg);
+        handler.send(msg, receiver);
     }
 
-    public void stopClient() throws IOException {
-        output.println(ProtocolStrings.STOP);
+    public void disconnect() {
+        handler.disconnect();
     }
 
     @Override
     public void run() {
-        String msg = input.nextLine();
-        while (!msg.equals(ProtocolStrings.STOP)) {
-            notifyListeners(msg);
-            msg = input.nextLine();
-        }
-        try {
-            socket.close();
-        } catch (IOException ex) {
-            Logger.getLogger(EchoClient.class.getName()).log(Level.SEVERE, null, ex);
+        boolean keepRunning = true;
+        while (keepRunning) {
+            String msg = input.nextLine();
+            System.out.println("Message Received: " + msg);
+            keepRunning = handler.handleMessage(msg);
         }
     }
 
-//    public static void main(String[] args) {
-//        int port = 9090;
-//        String ip = "localhost";
-//        if (args.length == 2) {
-//            port = Integer.parseInt(args[0]);
-//            ip = args[1];
-//        }
-//        try {
-//            EchoClient tester = new EchoClient();
-//            tester.connect(ip, port);
-//            System.out.println("Sending 'Hello world'");
-//            tester.send("Hello World");
-//            System.out.println("Waiting for a reply");
-//            tester.start();
-////            System.out.println("Received: " + tester.run()); //Important Blocking call         
-//            tester.stopClient();
-//            //System.in.read();      
-//        } catch (UnknownHostException ex) {
-//            Logger.getLogger(EchoClient.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (IOException ex) {
-//            Logger.getLogger(EchoClient.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//    }
     public void registerEchoListener(EchoListener l) {
-        this.listeners.add(l);
+        listeners.add(l);
     }
 
     public void unRegisterEchoListener(EchoListener l) {
