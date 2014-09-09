@@ -2,11 +2,15 @@ package echogui;
 
 import echoclient.EchoClient;
 import echoclient.EchoListener;
+import echoclient.Message;
+import echoclient.MessageType;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.ListModel;
 import javax.swing.UIManager;
 
 /**
@@ -223,8 +227,22 @@ public class EchoGUI extends JFrame implements EchoListener {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     @Override
-    public void messageArrived(String data) {
-        jTextAreaChat.append(data + "\n");
+    public void messageArrived(Message msg) {
+        MessageType type = msg.getType();
+        switch (type) {
+            case textmessage:
+                jTextAreaChat.append(msg.getSender() + " said: " + msg.getTextMsg());
+                break;
+            case online:
+                DefaultListModel model = (DefaultListModel)jList1.getModel();
+                model.clear();
+                model.addElement("*");
+                for (String user : msg.getOnlineUsers()) {
+                    model.addElement(user);
+                }
+            default:
+                throw new AssertionError();
+        }
     }
 
     /**

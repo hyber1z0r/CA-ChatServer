@@ -1,13 +1,14 @@
 package echoserver;
 
 import echoclient.EchoClient;
+import echoclient.Message;
+import echoclient.MessageType;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import shared.ProtocolStrings;
 
 /**
  *
@@ -44,8 +45,23 @@ public class ClientHandler {
     }
 
     public boolean handleMessage(String msg) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String[] protocols = msg.split("#");
+        switch (protocols[0]) {
+            case "MESSAGE":
+                client.notifyListeners(new Message(this, protocols[1], protocols[2], MessageType.textmessage));
+                return true;
+            case "ONLINE":
+                client.notifyListeners(new Message(this, protocols[1], protocols[2], MessageType.online));
+                return true;
+            case "CLOSE":
+                try {
+                    disconnect();
+                    socket.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            default:
+                return false;
+        }
     }
-
-    
 }

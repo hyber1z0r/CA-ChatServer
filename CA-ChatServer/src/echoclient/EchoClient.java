@@ -9,9 +9,6 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import shared.ProtocolStrings;
 
 public class EchoClient extends Thread {
 
@@ -43,7 +40,6 @@ public class EchoClient extends Thread {
         boolean keepRunning = true;
         while (keepRunning) {
             String msg = input.nextLine();
-            System.out.println("Message Received: " + msg);
             keepRunning = handler.handleMessage(msg);
         }
     }
@@ -61,7 +57,7 @@ public class EchoClient extends Thread {
         }
     }
 
-    private void notifyListeners(String msg) {
+    public void notifyListeners(Message msg) {
         for (EchoListener el : listeners) {
             el.messageArrived(msg);
         }

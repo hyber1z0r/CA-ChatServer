@@ -7,5 +7,5 @@ package echoclient;
  */
 public interface EchoListener {
 
-    void messageArrived(String data);
+    void messageArrived(Message msg);
 }
