@@ -12,7 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import shared.ProtocolStrings;
 
-public class EchoClient extends Thread{
+public class EchoClient extends Thread {
 
     private Socket socket;
     private int port;
@@ -30,12 +30,11 @@ public class EchoClient extends Thread{
         output = new PrintWriter(socket.getOutputStream(), true);  //Set to true, to get auto flush behaviour
         this.username = name;
     }
-    
+
     public void send(String msg, String receiver) {
         output.println("SEND#" + receiver + "#" + msg);
     }
 
-    
     public void stopClient() throws IOException {
         output.println(ProtocolStrings.STOP);
     }
@@ -77,14 +76,13 @@ public class EchoClient extends Thread{
 //            Logger.getLogger(EchoClient.class.getName()).log(Level.SEVERE, null, ex);
 //        }
 //    }
-
     public void registerEchoListener(EchoListener l) {
         this.listeners.add(l);
     }
 
     public void unRegisterEchoListener(EchoListener l) {
         for (EchoListener el : listeners) {
-            if(el.equals(l)){
+            if (el.equals(l)) {
                 listeners.remove(el);
                 break;
             }
@@ -100,6 +98,5 @@ public class EchoClient extends Thread{
     public String getUsername() {
         return username;
     }
-    
 
 }

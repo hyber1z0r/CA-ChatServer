@@ -59,4 +59,13 @@ public class EchoServer {
             ch.send(msg.toUpperCase());
         }
     }
+    
+    public static void send(String msg, String receiver){
+        String[] receivers = receiver.split(",");
+        for (String s : receivers) {
+            for (ClientHandler ch : clients) {
+//                if(ch.g)
+            }
+        }
+    }
 }

@@ -30,6 +30,14 @@ public class ClientHandler extends Thread {
             String message = input.nextLine(); //IMPORTANT blocking call
             Logger.getLogger(ClientHandler.class.getName()).log(Level.INFO, String.format("Received the message: %1$S ", message));
             while (!message.equals(ProtocolStrings.STOP)) {
+                String[] protocols = message.split("#");
+                switch (protocols[1]) {
+                    case "*":
+                        EchoServer.send(protocols[2]);
+                        break;
+                    default:
+                        EchoServer.send(protocols[2], protocols[1]);
+                }
                 EchoServer.send(message);
                 Logger.getLogger(ClientHandler.class.getName()).log(Level.INFO, String.format("Received the message: %1$S ", message.toUpperCase()));
                 message = input.nextLine(); //IMPORTANT blocking call
