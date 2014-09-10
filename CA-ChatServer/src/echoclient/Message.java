@@ -29,9 +29,17 @@ public class Message {
     public MessageType getType() {
         return type;
     }
-    
-    public String[] getOnlineUsers(){
+
+    public String[] getOnlineUsers() {
         return message.split(",");
+    }
+
+    public Message(ClientHandler source, String sender, MessageType type) {
+        this.source = source;
+        this.sender = sender;
+        this.type = type;
+        this.message = "";
+        this.textMsg = "";
     }
 
     public Message(ClientHandler source, String sender, String textMsg, MessageType type) {

@@ -50,8 +50,9 @@ public class ClientHandler {
             case "MESSAGE":
                 client.notifyListeners(new Message(this, protocols[1], protocols[2], MessageType.textmessage));
                 return true;
+                /// array out of bound. ONLINE er = ONLINE#Navn   altså ingen besked, kun 1 hashtag
             case "ONLINE":
-                client.notifyListeners(new Message(this, protocols[1], protocols[2], MessageType.online));
+                client.notifyListeners(new Message(this, protocols[1], MessageType.online));
                 return true;
             case "CLOSE":
                 try {
