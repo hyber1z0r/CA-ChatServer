@@ -6,27 +6,20 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.FileHandler;
-import java.util.logging.Formatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 import utils.Utils;
 
 public class EchoServer extends Thread {
 
-    private static int port;
-    private static String address;
-    private static String logFile;
-    private ConcurrentHashMap<String, Handler> handlers = new ConcurrentHashMap();
+    private final ConcurrentHashMap<String, Handler> handlers = new ConcurrentHashMap();
     private static final Properties properties = Utils.initProperties("server.properties");
 
     public void run() {
-        new EchoServer();
         main(null);
     }
 
-    void addHandler(echoserver.Handler handler) {
+    public void addHandler(echoserver.Handler handler) {
         if (handler.getUsername() == null) {
             handler.sendStop();
             return;
@@ -34,7 +27,7 @@ public class EchoServer extends Thread {
         handlers.put(handler.getUsername(), handler);
     }
 
-    void sendOnline() {
+    public void sendOnlineUsersMsg() {
         StringBuilder onlineUsers = new StringBuilder();
         boolean first = true;
         for (String user : handlers.keySet()) {
@@ -49,7 +42,7 @@ public class EchoServer extends Thread {
         }
     }
 
-    void closeClient(String user) {
+    public void closeClient(String user) {
         Handler client = (Handler) handlers.get(user);
         client.sendStop();
         try {
@@ -58,27 +51,28 @@ public class EchoServer extends Thread {
             Logger.getLogger(EchoServer.class.getName()).log(Level.SEVERE, null, ex);
         }
         handlers.remove(user);
-        sendOnline();
+        sendOnlineUsersMsg();
     }
 
-    void sendMessage(String receivers_, String msg, String sender) {
+    public void sendMessage(String receivers, String msg, String sender) {
         String messageString = "MESSAGE#" + sender + "#" + msg;
-        String[] receivers = receivers_.split(",");
-        if (receivers.length == 1) {
-            String receiver = receivers[0];
+        String[] receiversarray = receivers.split(",");
+        if (receiversarray.length == 1) {
+            String receiver = receiversarray[0];
             if (receiver.equals("*")) {
                 for (Handler client : handlers.values()) {
-                    client.sendMsg(messageString);
+                    client.sendMessage(messageString);
                 }
             } else {
                 sendMessageToClient(receiver, messageString, sender);
             }
-        } else {
-            for (String receiver : receivers) {
-                receiver = receiver.replaceAll("\\s", "");
-                sendMessageToClient(receiver, messageString, sender);
-            }
         }
+    }
+
+    private void sendMessageToClient(String receiver, String messageString, String sender) {
+        Handler handler = (Handler) handlers.get(receiver);
+        handler.sendMessage(messageString);
+
     }
 
     public void listen(ServerSocket serverSocket) {
@@ -111,11 +105,4 @@ public class EchoServer extends Thread {
             Logger.getLogger(EchoServer.class.getName()).log(Level.SEVERE, "Connection error: ", ex);
         }
     }
-
-    private void sendMessageToClient(String receiver, String messageString, String sender) {
-        Handler handler = (Handler) handlers.get(receiver);
-        handler.sendMsg(messageString);
-
-    }
-
 }

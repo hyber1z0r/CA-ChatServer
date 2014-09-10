@@ -18,9 +18,10 @@ public class EchoClient extends Thread {
     private PrintWriter output;
     private final List<EchoListener> listeners = new ArrayList();
     private String username;
-    private ClientHandler handler = new ClientHandler();
+    private final ClientHandler handler = new ClientHandler();
 
     public void connect(String address, int port, String name) throws UnknownHostException, IOException {
+        this.username = name;
         this.input = handler.connect(this, address, port, username);
         start();
         handler.sendConnectMsg();

@@ -10,7 +10,6 @@ import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.ListModel;
 import javax.swing.UIManager;
 
 /**
@@ -19,11 +18,10 @@ import javax.swing.UIManager;
  */
 public class EchoGUI extends JFrame implements EchoListener {
 
-    private EchoClient client;
+    private final EchoClient client;
 
     public EchoGUI() {
         initComponents();
-
         client = new EchoClient();
     }
 
@@ -250,10 +248,7 @@ public class EchoGUI extends JFrame implements EchoListener {
             Logger.getLogger(EchoGUI.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(this, "Couldn't establish connection!", "Connection error!", JOptionPane.ERROR_MESSAGE);
             System.exit(1);
-        }
-        DefaultListModel model = (DefaultListModel) jList1.getModel();
-        model.clear();
-        
+        }        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -277,6 +272,7 @@ public class EchoGUI extends JFrame implements EchoListener {
 
     @Override
     public void messageArrived(Message msg) {
+        System.out.println("A message arrived in GUI");
         MessageType type = msg.getType();
         switch (type) {
             case textmessage:

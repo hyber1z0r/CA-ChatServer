@@ -20,9 +20,9 @@ public class ClientHandler {
     private String username;
     
     public Scanner connect(EchoClient client, String ip, int port, String user) throws IOException {
-        socket = new Socket(ip, port);
-        input = new Scanner(socket.getInputStream());
-        output = new PrintWriter(socket.getOutputStream(), true);
+        this.socket = new Socket(ip, port);
+        this.input = new Scanner(socket.getInputStream());
+        this.output = new PrintWriter(socket.getOutputStream(), true);
         this.client = client;
         this.username = user;
         return input;
@@ -30,7 +30,7 @@ public class ClientHandler {
 
     public void send(String msg, String receiver) {
         String message = "SEND#" + receiver + "#" + msg;
-        System.out.println("Sending message: " + message);
+        System.out.println("Sending message(clienthandler): " + message);
         output.println(message);
     }
 
@@ -43,6 +43,7 @@ public class ClientHandler {
     }
 
     public boolean handleMessage(String msg) {
+        System.out.println("Client got message: " + msg);
         String[] protocols = msg.split("#");
         switch (protocols[0]) {
             case "MESSAGE":

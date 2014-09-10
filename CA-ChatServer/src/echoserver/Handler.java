@@ -18,10 +18,10 @@ import java.util.logging.Logger;
  */
 public class Handler extends Thread {
 
-    private Socket socket;
-    private PrintWriter output;
-    private Scanner input;
-    private EchoServer server;
+    private final Socket socket;
+    private final PrintWriter output;
+    private final Scanner input;
+    private final EchoServer server;
     private String username;
     private boolean keepRunning = true;
 
@@ -38,51 +38,51 @@ public class Handler extends Thread {
     }
 
     public void sendOnline(String onlineUsers) {
-
         String msg = "ONLINE#" + onlineUsers;
-        this.output.println(msg);
+        System.out.println("Handler sent Onlineusers:" + msg);
+        output.println(msg);
     }
 
     public void close() throws IOException {
-        this.socket.close();
+        socket.close();
     }
 
     public void sendStop() {
-        this.output.println("CLOSE#");
+        output.println("CLOSE#");
     }
 
-    public void sendMsg(String str) {
-        this.output.println(str);
+    public void sendMessage(String str) {
+        System.out.println("Sending from server to client: " + str);
+        output.println(str);
     }
 
+    @Override
     public void run() {
         try {
             while (keepRunning) {
-                String msg = input.nextLine();
-                String[] protocols = msg.split("#");
+                String message = input.nextLine();
+                System.out.println("(Server)Handler got input: " + message);
+                String[] protocols = message.split("#");
 
                 switch (protocols[0]) {
                     case "CONNECT":
-                        this.username = protocols[1];
-                        this.server.addHandler(this);
-                        this.server.sendOnline();
+                        username = protocols[1];
+                        server.addHandler(this);
+                        server.sendOnlineUsersMsg();
                         break;
                     case "SEND":
-
-                        String recepients = protocols[1];
-                        String message = protocols[2];
-                        this.server.sendMessage(recepients, message, this.username);
+                        String receivers = protocols[1];
+                        String msg = protocols[2];
+                        server.sendMessage(receivers, msg, username);
                         break;
                     case "CLOSE":
-
-                        this.server.closeClient(this.username);
-                        this.keepRunning = false;
-
+                        server.closeClient(username);
+                        keepRunning = false;
                         break;
                 }
             }
         } catch (Exception e) {
-
+            System.out.println(e.getMessage());
         }
         try {
             this.socket.close();
