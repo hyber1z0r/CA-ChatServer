@@ -210,7 +210,6 @@ public class EchoGUI extends JFrame implements EchoListener {
             String username = jTextFieldUsername.getText();
             client.connect("localhost", 9090, username);
             client.registerEchoListener(this);
-            client.start();
         } catch (IOException ex) {
             Logger.getLogger(EchoGUI.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(this, "Couldn't establish connection!", "Connection error!", JOptionPane.ERROR_MESSAGE);

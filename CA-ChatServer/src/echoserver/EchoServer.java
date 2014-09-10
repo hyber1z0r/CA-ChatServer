@@ -1,6 +1,8 @@
 package echoserver;
 
+import echoclient.Message;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -16,7 +18,7 @@ public class EchoServer {
     private static boolean keepRunning = true;
     private static ServerSocket serverSocket;
     private static final Properties properties = Utils.initProperties("server.properties");
-    private static final List<ClientHandler> clients = new ArrayList();
+    private static final List<Socket> sockets = new ArrayList();
 
     public static void stopServer() {
         keepRunning = false;
@@ -34,9 +36,7 @@ public class EchoServer {
             do {
                 Socket socket = serverSocket.accept(); //Important Blocking call
                 Logger.getLogger(EchoServer.class.getName()).log(Level.INFO, "Connected to a client");
-                ClientHandler client = new ClientHandler();
-//                client.start();
-                clients.add(client);
+                sockets.add(socket);
             } while (keepRunning);
         } catch (IOException ex) {
             Logger.getLogger(EchoServer.class.getName()).log(Level.SEVERE, null, ex);
@@ -45,27 +45,19 @@ public class EchoServer {
         }
     }
     
-    public static void removeHandler(ClientHandler ch){
-        for (ClientHandler clientHandler : clients) {
-            if(clientHandler.equals(ch)){
-                clients.remove(clientHandler);
+    public static void removeSocket(Socket s){
+        for (Socket socket : sockets) {
+            if(socket.equals(s)){
+                sockets.remove(socket);
                 break;
             }
         }
     }
     
-    public static void send(String msg) {
-        for (ClientHandler ch : clients) {
-//            ch.send(msg.toUpperCase());
-        }
-    }
-    
-    public static void send(String msg, String receiver){
-        String[] receivers = receiver.split(",");
-        for (String s : receivers) {
-            for (ClientHandler ch : clients) {
-//                if(ch.g)
-            }
+    public static void send(Message msg) throws IOException{
+        for (Socket s : sockets) {
+            PrintWriter output = new PrintWriter(s.getOutputStream(), true);
+            output.println(msg);
         }
     }
 }

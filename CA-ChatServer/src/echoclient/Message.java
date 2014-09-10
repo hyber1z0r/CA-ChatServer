@@ -1,6 +1,5 @@
 package echoclient;
 
-import echoserver.ClientHandler;
 
 /**
  *
@@ -12,7 +11,7 @@ public class Message {
     private final String sender;
     private final String textMsg;
     private final MessageType type;
-    private final ClientHandler source;
+    private final Object source;
 
     public String getMessage() {
         return textMsg;
@@ -34,7 +33,7 @@ public class Message {
         return message.split(",");
     }
 
-    public Message(ClientHandler source, String sender, MessageType type) {
+    public Message(Object source, String sender, MessageType type) {
         this.source = source;
         this.sender = sender;
         this.type = type;
@@ -42,7 +41,7 @@ public class Message {
         this.textMsg = "";
     }
 
-    public Message(ClientHandler source, String sender, String textMsg, MessageType type) {
+    public Message(Object source, String sender, String textMsg, MessageType type) {
         this.source = source;
         this.textMsg = textMsg;
         this.message = textMsg;

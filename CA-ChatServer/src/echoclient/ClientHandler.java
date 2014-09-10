@@ -1,8 +1,5 @@
-package echoserver;
+package echoclient;
 
-import echoclient.EchoClient;
-import echoclient.Message;
-import echoclient.MessageType;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -21,7 +18,7 @@ public class ClientHandler {
     private Socket socket;
     private EchoClient client;
     private String username;
-
+    
     public Scanner connect(EchoClient client, String ip, int port, String user) throws IOException {
         socket = new Socket(ip, port);
         input = new Scanner(socket.getInputStream());
@@ -33,6 +30,7 @@ public class ClientHandler {
 
     public void send(String msg, String receiver) {
         String message = "SEND#" + receiver + "#" + msg;
+        System.out.println("Sending message: " + message);
         output.println(message);
     }
 

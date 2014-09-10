@@ -1,6 +1,5 @@
 package echoclient;
 
-import echoserver.ClientHandler;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.InetAddress;
@@ -39,7 +38,8 @@ public class EchoClient extends Thread {
     public void run() {
         boolean keepRunning = true;
         while (keepRunning) {
-            String msg = input.nextLine();
+            String msg = input.nextLine(); // important blocking call
+            System.out.println("Message Received: " + msg);
             keepRunning = handler.handleMessage(msg);
         }
     }
