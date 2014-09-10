@@ -1,2 +1,0 @@
-sep. 10, 2014 11:42:40 AM echoserver.EchoServer main
-INFO: Connected to a client
