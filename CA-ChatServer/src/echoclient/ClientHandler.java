@@ -47,11 +47,11 @@ public class ClientHandler {
         String[] protocols = msg.split("#");
         switch (protocols[0]) {
             case "MESSAGE":
-                client.notifyListeners(new Message(this, protocols[1], protocols[2], MessageType.textmessage));
+                client.notifyListeners(new Message(this, protocols[1], protocols[2], MessageType.TEXTMESSAGE));
                 return true;
-                /// array out of bound. ONLINE er = ONLINE#Navn   altså ingen besked, kun 1 hashtag
             case "ONLINE":
-                client.notifyListeners(new Message(this, protocols[1], MessageType.online));
+                System.out.println(protocols[1]);
+                client.notifyListeners(new Message(this, protocols[1], MessageType.ONLINE));
                 return true;
             case "CLOSE":
                 try {

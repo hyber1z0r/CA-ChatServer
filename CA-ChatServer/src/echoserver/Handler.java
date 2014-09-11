@@ -28,8 +28,8 @@ public class Handler extends Thread {
     public Handler(EchoServer server, Socket s) throws IOException {
         this.server = server;
         this.socket = s;
-        this.input = new Scanner(this.socket.getInputStream());
-        this.output = new PrintWriter(this.socket.getOutputStream());
+        this.input = new Scanner(socket.getInputStream());
+        this.output = new PrintWriter(socket.getOutputStream(), true);
 
     }
 
@@ -39,7 +39,6 @@ public class Handler extends Thread {
 
     public void sendOnline(String onlineUsers) {
         String msg = "ONLINE#" + onlineUsers;
-        System.out.println("Handler sent Onlineusers:" + msg);
         output.println(msg);
     }
 

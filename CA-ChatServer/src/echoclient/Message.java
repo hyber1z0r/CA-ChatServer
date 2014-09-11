@@ -33,12 +33,12 @@ public class Message {
         return message.split(",");
     }
 
-    public Message(Object source, String sender, MessageType type) {
+    public Message(Object source, String textMsg, MessageType type) {
         this.source = source;
-        this.sender = sender;
+        this.sender = "server";
         this.type = type;
-        this.message = "";
-        this.textMsg = "";
+        this.message = textMsg;
+        this.textMsg = textMsg;
     }
 
     public Message(Object source, String sender, String textMsg, MessageType type) {
@@ -48,4 +48,11 @@ public class Message {
         this.sender = sender;
         this.type = type;
     }
+
+    @Override
+    public String toString() {
+        return "Message{" + "message=" + message + ", sender=" + sender + ", textMsg=" + textMsg + ", type=" + type + ", source=" + source + '}';
+    }
+    
+    
 }

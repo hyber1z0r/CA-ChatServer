@@ -1,9 +1,6 @@
 package echoclient;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.InetAddress;
-import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,11 +8,7 @@ import java.util.Scanner;
 
 public class EchoClient extends Thread {
 
-    private Socket socket;
-    private int port;
-    private InetAddress serverAddress;
     private Scanner input;
-    private PrintWriter output;
     private final List<EchoListener> listeners = new ArrayList();
     private String username;
     private final ClientHandler handler = new ClientHandler();
@@ -38,11 +31,14 @@ public class EchoClient extends Thread {
     @Override
     public void run() {
         boolean keepRunning = true;
+        System.out.println("Startet echoclient");
         while (keepRunning) {
+            // den bliver hængende forevigt! 
             String msg = input.nextLine(); // important blocking call
             System.out.println("Message Received: " + msg);
             keepRunning = handler.handleMessage(msg);
         }
+        System.out.println("EchoClient exited run");
     }
 
     public void registerEchoListener(EchoListener l) {

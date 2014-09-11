@@ -15,6 +15,7 @@ public class EchoServer extends Thread {
     private final ConcurrentHashMap<String, Handler> handlers = new ConcurrentHashMap();
     private static final Properties properties = Utils.initProperties("server.properties");
 
+    @Override
     public void run() {
         main(null);
     }
@@ -38,7 +39,9 @@ public class EchoServer extends Thread {
             first = false;
         }
         for (Handler client : handlers.values()) {
+            System.out.println(onlineUsers);
             client.sendOnline(onlineUsers.toString());
+            
         }
     }
 
@@ -60,19 +63,15 @@ public class EchoServer extends Thread {
         if (receiversarray.length == 1) {
             String receiver = receiversarray[0];
             if (receiver.equals("*")) {
-                for (Handler client : handlers.values()) {
-                    client.sendMessage(messageString);
+                System.out.println("Receiver er lig: *");
+                for (Handler handler : handlers.values()) {
+                    handler.sendMessage(messageString);
                 }
             } else {
-                sendMessageToClient(receiver, messageString, sender);
+                Handler handler = (Handler) handlers.get(receiver);
+                handler.sendMessage(messageString);
             }
         }
-    }
-
-    private void sendMessageToClient(String receiver, String messageString, String sender) {
-        Handler handler = (Handler) handlers.get(receiver);
-        handler.sendMessage(messageString);
-
     }
 
     public void listen(ServerSocket serverSocket) {
