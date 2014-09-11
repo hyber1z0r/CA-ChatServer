@@ -287,7 +287,7 @@ public class EchoGUI extends JFrame implements EchoListener {
                 }
                 break;
             default:
-                System.out.println("Threw an exception: DEFAULT:");
+                throw new AssertionError();
         }
     }
 

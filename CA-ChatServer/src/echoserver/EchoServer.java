@@ -62,7 +62,6 @@ public class EchoServer extends Thread {
         if (receiversarray.length == 1) {
             String receiver = receiversarray[0];
             if (receiver.equals("*")) {
-                System.out.println("Receiver er lig: *");
                 for (Handler handler : handlers.values()) {
                     handler.sendMessage(messageString);
                 }
@@ -77,7 +76,7 @@ public class EchoServer extends Thread {
         try {
             while (true) {
                 Socket socket = serverSocket.accept();
-                System.out.println("Connected to a client");
+                Logger.getLogger(EchoServer.class.getName()).log(Level.INFO, "Connected to a client");
                 new Handler(this, socket).start();
             }
         } catch (IOException ex) {

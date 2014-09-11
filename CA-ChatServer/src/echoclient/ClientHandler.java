@@ -43,14 +43,12 @@ public class ClientHandler {
     }
 
     public boolean handleMessage(String msg) {
-        System.out.println("Client got message: " + msg);
         String[] protocols = msg.split("#");
         switch (protocols[0]) {
             case "MESSAGE":
                 client.notifyListeners(new Message(this, protocols[1], protocols[2], MessageType.TEXTMESSAGE));
                 return true;
             case "ONLINE":
-                System.out.println(protocols[1]);
                 client.notifyListeners(new Message(this, protocols[1], MessageType.ONLINE));
                 return true;
             case "CLOSE":
