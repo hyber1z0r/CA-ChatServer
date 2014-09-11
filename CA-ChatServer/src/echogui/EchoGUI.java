@@ -21,15 +21,13 @@ import javax.swing.UIManager;
 public class EchoGUI extends JFrame implements EchoListener {
 
     private final EchoClient client;
-    private final DefaultListModel listmodel;
+    private DefaultListModel listmodel;
     private boolean connected = false;
 
     public EchoGUI() {
-
         initComponents();
         client = new EchoClient();
-        listmodel = new DefaultListModel();
-        jListUsers.setModel(listmodel);
+        initList();
         addWindowListener();
     }
 
@@ -59,9 +57,9 @@ public class EchoGUI extends JFrame implements EchoListener {
         jButtonConnect = new javax.swing.JButton();
         jButtonDisco = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+        jButtonAdd = new javax.swing.JButton();
+        jButtonClear = new javax.swing.JButton();
+        jTextFieldSendTo = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
         jListUsers = new javax.swing.JList();
@@ -71,6 +69,7 @@ public class EchoGUI extends JFrame implements EchoListener {
         jScrollPane3.setViewportView(jTextArea1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Chat Client");
 
         jTextAreaChat.setColumns(20);
         jTextAreaChat.setRows(5);
@@ -93,6 +92,10 @@ public class EchoGUI extends JFrame implements EchoListener {
 
         jLabel3.setText("Name");
 
+        jTextFieldIp.setText("127.0.0.1");
+
+        jTextFieldPort.setText("9090");
+
         jButtonConnect.setText("Connect");
         jButtonConnect.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -109,17 +112,17 @@ public class EchoGUI extends JFrame implements EchoListener {
 
         jLabel4.setText("ONLINE USERS#");
 
-        jButton3.setText("Add");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        jButtonAdd.setText("Add");
+        jButtonAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                jButtonAddActionPerformed(evt);
             }
         });
 
-        jButton4.setText("Clear");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        jButtonClear.setText("Clear");
+        jButtonClear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                jButtonClearActionPerformed(evt);
             }
         });
 
@@ -130,6 +133,7 @@ public class EchoGUI extends JFrame implements EchoListener {
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
+        jListUsers.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane5.setViewportView(jListUsers);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -148,19 +152,17 @@ public class EchoGUI extends JFrame implements EchoListener {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jButtonAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(54, 54, 54)
-                                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(jButtonClear, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(jLabel5)
                                     .addComponent(jButtonSend, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextField1))
+                                    .addComponent(jTextFieldSendTo))
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel4)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(jLabel4)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(0, 0, Short.MAX_VALUE))))))
@@ -214,11 +216,11 @@ public class EchoGUI extends JFrame implements EchoListener {
                         .addGap(18, 18, 18)
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTextFieldSendTo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton4)
-                            .addComponent(jButton3))
+                            .addComponent(jButtonClear)
+                            .addComponent(jButtonAdd))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButtonSend, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)
@@ -245,6 +247,11 @@ public class EchoGUI extends JFrame implements EchoListener {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void initList() {
+        listmodel = new DefaultListModel();
+        jListUsers.setModel(listmodel);
+    }
 
     private void addWindowListener() {
         this.addWindowListener(new WindowListener() {
@@ -284,16 +291,19 @@ public class EchoGUI extends JFrame implements EchoListener {
         });
     }
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        jTextField1.setText("");
-    }//GEN-LAST:event_jButton4ActionPerformed
+    private void jButtonClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonClearActionPerformed
+        jTextFieldSendTo.setText("");
+    }//GEN-LAST:event_jButtonClearActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        String persons = jListUsers.getSelectedValue().toString();
-        String morepeps = jTextField1.getText();
-
-        jTextField1.setText(persons + "," + morepeps);
-    }//GEN-LAST:event_jButton3ActionPerformed
+    private void jButtonAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddActionPerformed
+        String selected = jListUsers.getSelectedValue().toString();
+        String alreadyselected = jTextFieldSendTo.getText();
+        if (!alreadyselected.isEmpty()) {
+            jTextFieldSendTo.setText(selected);
+        } else {
+            jTextFieldSendTo.setText(selected + "," + alreadyselected);
+        }
+    }//GEN-LAST:event_jButtonAddActionPerformed
 
     private void jButtonDiscoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDiscoActionPerformed
         client.disconnect();
@@ -302,18 +312,22 @@ public class EchoGUI extends JFrame implements EchoListener {
     private void jButtonConnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConnectActionPerformed
         try {
             String username = jTextFieldUsername.getText();
-            client.connect("localhost", 9090, username);
+            String ip = jTextFieldIp.getText();
+            int port = Integer.parseInt(jTextFieldPort.getText());
+            client.connect(ip, port, username);
             client.registerEchoListener(this);
             connected = true;
         } catch (IOException ex) {
             Logger.getLogger(EchoGUI.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(this, "Couldn't establish connection!", "Connection error!", JOptionPane.ERROR_MESSAGE);
+        } catch (NumberFormatException ex){
+            JOptionPane.showMessageDialog(this, "Invalid port number", "Invalid!", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButtonConnectActionPerformed
 
     private void jButtonSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSendActionPerformed
         String message = jTextAreaSend.getText();
-        String receiver = "*";
+        String receiver = jTextFieldSendTo.getText();
         client.send(message, receiver);
     }//GEN-LAST:event_jButtonSendActionPerformed
 
@@ -376,8 +390,8 @@ public class EchoGUI extends JFrame implements EchoListener {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButtonAdd;
+    private javax.swing.JButton jButtonClear;
     private javax.swing.JButton jButtonConnect;
     private javax.swing.JButton jButtonDisco;
     private javax.swing.JButton jButtonSend;
@@ -395,9 +409,9 @@ public class EchoGUI extends JFrame implements EchoListener {
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextArea jTextAreaChat;
     private javax.swing.JTextArea jTextAreaSend;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextFieldIp;
     private javax.swing.JTextField jTextFieldPort;
+    private javax.swing.JTextField jTextFieldSendTo;
     private javax.swing.JTextField jTextFieldUsername;
     // End of variables declaration//GEN-END:variables
 }
