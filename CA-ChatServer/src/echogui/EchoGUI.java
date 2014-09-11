@@ -4,6 +4,8 @@ import echoclient.EchoClient;
 import echoclient.EchoListener;
 import echoclient.Message;
 import echoclient.MessageType;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,13 +22,15 @@ public class EchoGUI extends JFrame implements EchoListener {
 
     private final EchoClient client;
     private final DefaultListModel listmodel;
+    private boolean connected = false;
 
     public EchoGUI() {
-        
+
         initComponents();
         client = new EchoClient();
         listmodel = new DefaultListModel();
-        jListUsers.setModel(listmodel);        
+        jListUsers.setModel(listmodel);
+        addWindowListener();
     }
 
     /**
@@ -242,6 +246,44 @@ public class EchoGUI extends JFrame implements EchoListener {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void addWindowListener() {
+        this.addWindowListener(new WindowListener() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                if (connected) {
+                    client.disconnect();
+                    System.out.println("Disconnecting");
+                }
+                System.out.println("Closing");
+                System.exit(0);
+            }
+
+            @Override
+            public void windowOpened(WindowEvent e) {
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+            }
+        });
+    }
+
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         jTextField1.setText("");
     }//GEN-LAST:event_jButton4ActionPerformed
@@ -262,6 +304,7 @@ public class EchoGUI extends JFrame implements EchoListener {
             String username = jTextFieldUsername.getText();
             client.connect("localhost", 9090, username);
             client.registerEchoListener(this);
+            connected = true;
         } catch (IOException ex) {
             Logger.getLogger(EchoGUI.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(this, "Couldn't establish connection!", "Connection error!", JOptionPane.ERROR_MESSAGE);
