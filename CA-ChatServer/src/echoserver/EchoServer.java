@@ -41,7 +41,6 @@ public class EchoServer extends Thread {
         for (Handler client : handlers.values()) {
             System.out.println(onlineUsers);
             client.sendOnline(onlineUsers.toString());
-            
         }
     }
 

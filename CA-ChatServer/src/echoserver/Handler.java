@@ -51,7 +51,6 @@ public class Handler extends Thread {
     }
 
     public void sendMessage(String str) {
-        System.out.println("Sending from server to client: " + str);
         output.println(str);
     }
 
@@ -60,7 +59,6 @@ public class Handler extends Thread {
         try {
             while (keepRunning) {
                 String message = input.nextLine();
-                System.out.println("(Server)Handler got input: " + message);
                 String[] protocols = message.split("#");
 
                 switch (protocols[0]) {
