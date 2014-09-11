@@ -19,10 +19,14 @@ import javax.swing.UIManager;
 public class EchoGUI extends JFrame implements EchoListener {
 
     private final EchoClient client;
+    private final DefaultListModel listmodel;
 
     public EchoGUI() {
+        
         initComponents();
         client = new EchoClient();
+        listmodel = new DefaultListModel();
+        jListUsers.setModel(listmodel);        
     }
 
     /**
@@ -139,18 +143,23 @@ public class EchoGUI extends JFrame implements EchoListener {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 145, Short.MAX_VALUE)
+                                        .addGap(54, 54, 54)
                                         .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(jLabel5)
-                                    .addComponent(jTextField1)
-                                    .addComponent(jButtonSend, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(jButtonSend, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jTextField1))
+                                .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPane5)
-                                    .addComponent(jLabel4)))))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel4)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(0, 0, Short.MAX_VALUE))))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jButtonConnect, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -171,7 +180,7 @@ public class EchoGUI extends JFrame implements EchoListener {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(55, 55, 55)
                                 .addComponent(jButtonDisco, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -194,7 +203,7 @@ public class EchoGUI extends JFrame implements EchoListener {
                             .addComponent(jButtonConnect))
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(12, 12, 12)
                         .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -206,7 +215,7 @@ public class EchoGUI extends JFrame implements EchoListener {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton4)
                             .addComponent(jButton3))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButtonSend, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
@@ -217,10 +226,10 @@ public class EchoGUI extends JFrame implements EchoListener {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -233,12 +242,20 @@ public class EchoGUI extends JFrame implements EchoListener {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButtonSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSendActionPerformed
-        String message = jTextAreaSend.getText();
-        String receiver = "*";
-        client.send(message, receiver);
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        jTextField1.setText("");
+    }//GEN-LAST:event_jButton4ActionPerformed
 
-    }//GEN-LAST:event_jButtonSendActionPerformed
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        String persons = jListUsers.getSelectedValue().toString();
+        String morepeps = jTextField1.getText();
+
+        jTextField1.setText(persons + "," + morepeps);
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButtonDiscoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDiscoActionPerformed
+        client.disconnect();
+    }//GEN-LAST:event_jButtonDiscoActionPerformed
 
     private void jButtonConnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConnectActionPerformed
         try {
@@ -251,20 +268,11 @@ public class EchoGUI extends JFrame implements EchoListener {
         }
     }//GEN-LAST:event_jButtonConnectActionPerformed
 
-    private void jButtonDiscoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDiscoActionPerformed
-        client.disconnect();
-    }//GEN-LAST:event_jButtonDiscoActionPerformed
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        String persons = jListUsers.getSelectedValue().toString();
-        String morepeps = jTextField1.getText();
-
-        jTextField1.setText(persons + "," + morepeps);
-    }//GEN-LAST:event_jButton3ActionPerformed
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        jTextField1.setText("");
-    }//GEN-LAST:event_jButton4ActionPerformed
+    private void jButtonSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSendActionPerformed
+        String message = jTextAreaSend.getText();
+        String receiver = "*";
+        client.send(message, receiver);
+    }//GEN-LAST:event_jButtonSendActionPerformed
 
     @Override
     public void messageArrived(Message msg) {
@@ -275,15 +283,13 @@ public class EchoGUI extends JFrame implements EchoListener {
                 jTextAreaChat.append(msg.getSender() + " said: " + msg.getTextMsg() + "\n");
                 break;
             case ONLINE:
-                System.out.println("The CASE is ONLINE!");
-                DefaultListModel model = (DefaultListModel) jListUsers.getModel();
-                model.clear();
-                model.addElement("*");
-                System.out.println("It should have cleared the model and added the element now!");
-                jListUsers.repaint();
+                listmodel.clear();
+                listmodel.addElement("*");
                 for (String user : msg.getOnlineUsers()) {
-                    model.addElement(user);
+                    listmodel.addElement(user);
                 }
+                jListUsers.revalidate();
+                jListUsers.repaint();
                 break;
             default:
                 throw new AssertionError();
