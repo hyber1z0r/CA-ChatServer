@@ -67,25 +67,14 @@ public class HttpServer extends Thread
         public void handle(HttpExchange he) throws IOException
         {
             String path = contentFolder + "onlineusers.html";
-            String line = "";
             File file = new File(path);
-            Scanner s = new Scanner(file);
             Path path1 = Paths.get(path);
             Charset charset = StandardCharsets.UTF_8;
 
             String content = new String(Files.readAllBytes(path1), charset);
             content = content.replaceAll("<h1>Online users:</h1>", "<h1>Online users: " + EchoServer.getOnlineUsers() + "</h1>");
             Files.write(path1, content.getBytes(charset));
-//            while (s.hasNext())
-//            {
-//                line = s.next();
-//               if(line.contains("<h1>Online users:</h1>"))
-//               {
-//
-//                   line = line.replace("<h1>Online users:</h1>", "<h1>Online users: " + EchoServer.getOnlineUsers() + "</h1>");
-//                  
-//               }
-//            }
+
             byte[] bytesToSend = new byte[(int) file.length()];
             try
             {
