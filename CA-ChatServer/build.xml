@@ -15,7 +15,7 @@
       <copy file="startServer.bat" todir="${dist.dir}"/>
       <copy file="startClient.bat" todir="${dist.dir}"/> 
       <copy file="startWebServer.bat" todir="${dist.dir}"/>
-      <copy file="chatLog.txt.1" todir="${dist.dir}"/>
+      <copy file="chatLog.txt" todir="${dist.dir}"/>
     </target>
     <!--
 
