@@ -193,7 +193,7 @@ public class HttpServer extends Thread
         {
             String path = contentFolder + "Chatlog.html";
             File file = new File(path);
-            String ChatPath = "chatLog.txt.1"; 
+            String ChatPath = "chatLog.txt"; 
             Scanner scan = new Scanner(new File(ChatPath));
             StringBuilder sb = new StringBuilder();
             while (scan.hasNext())
