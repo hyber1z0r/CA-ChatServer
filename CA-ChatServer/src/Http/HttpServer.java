@@ -26,7 +26,7 @@ public class HttpServer extends Thread
 {
 
     static int port = 8080;
-    static String ip = "127.0.0.1";
+    static String ip = "100.85.76.5";
     static String contentFolder = "public/";
 
     public static void main(String[] args) throws Exception
@@ -42,6 +42,7 @@ public class HttpServer extends Thread
         server.createContext("/", new RequestHandler2());
         server.createContext("/bootstrap.min.css", new CSSRequestHandler());
         server.createContext("/Chatlog", new ChatlogRequestHandler());
+        server.createContext("/CA-ChatClient", new DownloadRequestHandler());
         
         server.setExecutor(null); // Use the default executor
         server.start();
@@ -155,6 +156,35 @@ public class HttpServer extends Thread
         }  
      }
      
+     
+     static class DownloadRequestHandler implements HttpHandler
+     {
+         @Override
+         public void handle(HttpExchange he) throws IOException
+        {
+            String path = "dist/CA-ChatServer.jar";
+            File file = new File(path);
+            byte[] bytesToSend = new byte[(int) file.length()];
+            try
+            {
+                BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
+                bis.read(bytesToSend, 0, bytesToSend.length);
+            } catch (IOException ie)
+            {
+                ie.printStackTrace();
+            }
+            String contentType = "application/java-archive";
+            Headers h = he.getResponseHeaders();
+            h.add("Content-Type", contentType);
+            he.sendResponseHeaders(200, bytesToSend.length);
+            try (OutputStream os = he.getResponseBody())
+            {
+                os.write(bytesToSend, 0, bytesToSend.length);
+                
+            }
+        }  
+     }
+     
      static class ChatlogRequestHandler implements HttpHandler
      {
 
@@ -163,6 +193,25 @@ public class HttpServer extends Thread
         {
             String path = contentFolder + "Chatlog.html";
             File file = new File(path);
+            String ChatPath = "chatLog.txt.1"; 
+            Scanner scan = new Scanner(new File(ChatPath));
+            StringBuilder sb = new StringBuilder();
+            while (scan.hasNext())
+            {
+              sb.append("<tr><td>");
+              sb.append(scan.nextLine());
+              sb.append("</td><td>");
+              sb.append(scan.nextLine());
+              sb.append("</td><tr>");
+            }
+            sb.append("</tr>");
+            Path path1 = Paths.get(path);
+            Charset charset = StandardCharsets.UTF_8;
+
+            String content = new String(Files.readAllBytes(path1), charset);
+            content = content.replaceAll("###DATA###", sb.toString());
+            Files.write(path1, content.getBytes(charset));
+            scan.close();
             byte[] bytesToSend = new byte[(int) file.length()];
             try
             {

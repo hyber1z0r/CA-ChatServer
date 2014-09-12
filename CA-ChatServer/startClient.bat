@@ -1,1 +1,1 @@
-java -cp Echo.jar echogui.EchoGUI
+java -cp CA-ChatServer.jar echogui.EchoGUI
