@@ -6,6 +6,7 @@
 
 package run;
 
+import Http.HttpServer;
 import echoserver.EchoServer;
 
 /**
@@ -14,8 +15,9 @@ import echoserver.EchoServer;
  */
 public class Run {
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         new EchoServer().start();
+        new HttpServer().run();
     }
     
     

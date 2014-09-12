@@ -12,7 +12,7 @@ import utils.Utils;
 
 public class EchoServer extends Thread {
 
-    private final ConcurrentHashMap<String, Handler> handlers = new ConcurrentHashMap();
+    private static final ConcurrentHashMap<String, Handler> handlers = new ConcurrentHashMap();
     private static final Properties properties = Utils.initProperties("server.properties");
 
     @Override
@@ -100,5 +100,9 @@ public class EchoServer extends Thread {
         } catch (IOException ex) {
             Logger.getLogger(EchoServer.class.getName()).log(Level.SEVERE, "Connection error: ", ex);
         }
+    }
+    public static int getOnlineUsers()
+    {
+        return handlers.size();
     }
 }

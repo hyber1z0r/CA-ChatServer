@@ -1,0 +1,6 @@
+sep 12, 2014 11:24:06 AM echoserver.EchoServer listen
+INFO: Connected to a client
+sep 12, 2014 11:24:12 AM echoserver.EchoServer listen
+INFO: Connected to a client
+sep 12, 2014 11:25:46 AM echoserver.EchoServer listen
+INFO: Connected to a client
