@@ -26,6 +26,7 @@ public class EchoServer extends Thread {
             return;
         }
         handlers.put(handler.getUsername(), handler);
+        Logger.getLogger(EchoServer.class.getName()).log(Level.INFO, "Added a handler to the list", new Object[]{handler.getUsername()});
     }
 
     public void sendOnlineUsersMsg() {
@@ -53,6 +54,7 @@ public class EchoServer extends Thread {
         }
         handlers.remove(user);
         sendOnlineUsersMsg();
+        Logger.getLogger(EchoServer.class.getName()).log(Level.INFO, "Closed a client", new Object[]{client.getUsername()});
     }
 
     public void sendMessage(String receivers, String msg, String sender) {
@@ -63,10 +65,12 @@ public class EchoServer extends Thread {
             if (receiver.equals("*")) {
                 for (Handler handler : handlers.values()) {
                     handler.sendMessage(messageString);
+                    Logger.getLogger(EchoServer.class.getName()).log(Level.INFO, handler.getUsername() + " Sent a message to all: " + messageString, new Object[]{handler.getUsername()});
                 }
             } else {
                 Handler handler = (Handler) handlers.get(receiver);
                 handler.sendMessage(messageString);
+                Logger.getLogger(EchoServer.class.getName()).log(Level.INFO, handler.getUsername() + " Sent a message: " + messageString + " to: " + receiver, new Object[]{handler.getUsername()});
             }
         }
     }
@@ -93,16 +97,12 @@ public class EchoServer extends Thread {
             serverSocket.bind(new InetSocketAddress(ip, port));
             EchoServer server = new EchoServer();
             server.listen(serverSocket);
-
-            for (java.util.logging.Handler h : Logger.getLogger(EchoServer.class.getName()).getHandlers()) {
-                h.close();
-            }
         } catch (IOException ex) {
             Logger.getLogger(EchoServer.class.getName()).log(Level.SEVERE, "Connection error: ", ex);
         }
     }
-    public static int getOnlineUsers()
-    {
+
+    public static int getOnlineUsers() {
         return handlers.size();
     }
 }

@@ -307,6 +307,11 @@ public class EchoGUI extends JFrame implements EchoListener {
 
     private void jButtonDiscoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDiscoActionPerformed
         client.disconnect();
+        jTextFieldIp.setEnabled(true);
+        jTextFieldPort.setEnabled(true);
+        jTextFieldUsername.setEnabled(true);
+        jButtonConnect.setEnabled(true);
+        jTextFieldUsername.setText("");
     }//GEN-LAST:event_jButtonDiscoActionPerformed
 
     private void jButtonConnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConnectActionPerformed
@@ -317,10 +322,14 @@ public class EchoGUI extends JFrame implements EchoListener {
             client.connect(ip, port, username);
             client.registerEchoListener(this);
             connected = true;
+            jTextFieldIp.setEnabled(false);
+            jTextFieldPort.setEnabled(false);
+            jTextFieldUsername.setEnabled(false);
+            jButtonConnect.setEnabled(false);
         } catch (IOException ex) {
             Logger.getLogger(EchoGUI.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(this, "Couldn't establish connection!", "Connection error!", JOptionPane.ERROR_MESSAGE);
-        } catch (NumberFormatException ex){
+        } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Invalid port number", "Invalid!", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButtonConnectActionPerformed
@@ -328,6 +337,10 @@ public class EchoGUI extends JFrame implements EchoListener {
     private void jButtonSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSendActionPerformed
         String message = jTextAreaSend.getText();
         String receiver = jTextFieldSendTo.getText();
+        if (message.isEmpty() || receiver.isEmpty()) {
+            jTextAreaChat.append("Error, no user selected or empty message!\n");
+            return;
+        }
         client.send(message, receiver);
     }//GEN-LAST:event_jButtonSendActionPerformed
 
