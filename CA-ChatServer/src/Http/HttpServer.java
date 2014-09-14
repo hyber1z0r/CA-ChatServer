@@ -233,4 +233,32 @@ public class HttpServer extends Thread
         }        
          
      }
+     
+        static class DocumentationRequestHandler implements HttpHandler
+     {
+         @Override
+         public void handle(HttpExchange he) throws IOException
+        {
+            String path = "dist/Documentation.pdf";
+            File file = new File(path);
+            byte[] bytesToSend = new byte[(int) file.length()];
+            try
+            {
+                BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
+                bis.read(bytesToSend, 0, bytesToSend.length);
+            } catch (IOException ie)
+            {
+                ie.printStackTrace();
+            }
+            String contentType = "application/java-archive";
+            Headers h = he.getResponseHeaders();
+            h.add("Content-Type", contentType);
+            he.sendResponseHeaders(200, bytesToSend.length);
+            try (OutputStream os = he.getResponseBody())
+            {
+                os.write(bytesToSend, 0, bytesToSend.length);
+                
+            }
+        }  
+     }
 }
