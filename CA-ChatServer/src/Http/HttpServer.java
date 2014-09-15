@@ -39,8 +39,8 @@ public class HttpServer extends Thread {
         server.createContext("/", new RequestHandler2());
         server.createContext("/bootstrap.min.css", new CSSRequestHandler());
         server.createContext("/Chatlog", new ChatlogRequestHandler());
-        server.createContext("/CA-ChatClient.jar", new DownloadRequestHandler());
-        server.createContext("/Documentation.pdf", new DocumentationRequestHandler());
+        server.createContext("/CA-ChatClient", new DownloadRequestHandler());
+        server.createContext("/Documentation", new DocumentationRequestHandler());
 
         server.setExecutor(null); // Use the default executor
         server.start();
